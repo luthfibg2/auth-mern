@@ -4,15 +4,19 @@ import { MailIcon, Lock, LoaderPinwheel } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import Input from '../components/Input'
+import { useAuthStore } from '../store/authStore'
+import toast from 'react-hot-toast'
 
 const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const isLoading = false;
+  const { login, isLoading, error } = useAuthStore();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    await login(email, password);
+    toast.success('Berhasil masuk');
   }
   
   return (
@@ -34,22 +38,26 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}/>
             
-            <Input 
-            icon={Lock}
-            type='password'
-            placeholder='Password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}/>
+          <Input 
+          icon={Lock}
+          type='password'
+          placeholder='Password'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}/>
 
-            <div className="flex items-center">
-              <Link to='/forgot-password' style={{ color: '#3fb290', fontWeight: 'normal', fontSize: '12px' }}>Lupa Password?</Link>
-            </div>
+          <div className="flex items-center">
+            <Link to='/forgot-password' style={{ color: '#3fb290', fontWeight: 'normal', fontSize: '12px' }}>Lupa Password?</Link>
+          </div>
 
-          <motion.button className='w-full mt-5 py-3 px-4 bg-gradient-to-r from-cadmium-500 to-emerald-800 text-white font-bold rounded-lg shadow-lg hover:from-cadmium-600 hover:to-emerald-900 focus:outline-none focus:ring-2 focus:ring-cadmium-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          type='submit'
-          disabled={isLoading}>
+          {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+
+          <motion.button 
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type='submit'
+            className='w-full mt-5 py-3 px-4 bg-gradient-to-r from-cadmium-500 to-emerald-800 text-white font-bold rounded-lg shadow-lg hover:from-cadmium-600 hover:to-emerald-900 focus:outline-none focus:ring-2 focus:ring-cadmium-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
+            disabled={isLoading}
+          >
             {isLoading ? <LoaderPinwheel className='size-5 animate-spin mx-auto' /> : 'Masuk'}
           </motion.button>
         </form>
