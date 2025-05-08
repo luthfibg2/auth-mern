@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
 import { LoaderPinwheel, Lock, MailIcon, User } from 'lucide-react'
-import React from 'react'
-import Input from '../components/Input'
 import { Link } from 'react-router-dom'
-import PasswordStrengthMeter from '../components/PasswordStrengthMeter'
 import { useAuthStore } from '../store/authStore'
 import { useNavigate } from 'react-router-dom'
+
+import React from 'react'
+import Input from '../components/Input'
+import PasswordStrengthMeter from '../components/PasswordStrengthMeter'
 
 const SignUp = () => {
   const [name, setName] = React.useState('');

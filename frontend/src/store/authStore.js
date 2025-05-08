@@ -1,8 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
-import { verifyEmail } from '../../../backend/controllers/auth.controller';
 
-const API_URL = "http://localhost:4000";
+const API_URL = "http://localhost:4000/api/auth";
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
@@ -18,7 +17,7 @@ export const useAuthStore = create((set) => ({
             const response = await axios.post(`${API_URL}/signup`, {email, password, name});
             set({isLoading: false, user: response.data.user, isAuthenticated: true});
         } catch (error) {
-            set({isLoading: false, error: error.response.data.message || 'Error signing up'});
+            set({isLoading: false, error: error.response?.data?.error || error.response?.data?.message || 'Error signing up'});
             throw error;
         }
     },
